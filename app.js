@@ -1,22 +1,44 @@
-let favNumber=4;
-let baseURL='http://numbersapi.com'
 
-$.getJSON(`${baseURL}/${favNumber}?json`).then(data => {
-    console.log(data);
-  });
+  favoriteNumberPromise = axios.get("http://numbersapi.com/23?json")
 
-  let favNumbers = [4,7,9];
-  $.getJSON(`${baseURL}/${favNumbers}?json`).then(data => {
-    console.log(data);
-  });
-      
-  Promise.all(
-    Array.from({ length: 4 }, () => {
-      return $.getJSON(`${baseURL}/${favNumber}?json`);
-    })
-  ).then(facts => {
-    facts.forEach(data => $("body").append(`<p>${data.text}</p>`));
-  });
+  favoriteNumberPromise.then(response => {
+    $(".1").append(`<p>${response.data.text}</p>`)
+    console.log(response.data.text)
+    
+  }).catch(error => {
+    console.log("Error")
+    console.log(error)
+  })
 
-//   let myPromise =axios.get(`${baseURL}/${favNumber}`)
-//   console.log(myPromise)
+  multipleNumberFactPromise = axios.get("http://numbersapi.com/23..25,32,34?json")
+
+  multipleNumberFactPromise.then(response => {
+    
+    for( let res in response.data){
+      $(".2").append(`<p>${response.data[res]}</p>`)
+    }
+    
+  }).catch(error => {
+    console.log("Error")
+    console.log(error)
+  })
+
+  numberFactPromise = axios.get("http://numbersapi.com/35?json")
+
+  numberFactPromise.then(response =>{
+    $(".3").append(`<p>${response.data.text}</p>`)
+    return axios.get("http://numbersapi.com/35?json")
+  }).then(res =>{
+    $(".4").append(`<p>${res.data.text}</p>`)
+    return axios.get("http://numbersapi.com/35?json")
+  }).then(res =>{
+    $(".5").append(`<p>${res.data.text}</p>`)
+    return axios.get("http://numbersapi.com/35?json")
+  }).then(res =>{
+    $(".6").append(`<p>${res.data.text}</p>`)
+    return axios.get("http://numbersapi.com/35?json")
+  })
+  .catch(err =>{
+    console.log("Error")
+    console.log(err)
+  })
